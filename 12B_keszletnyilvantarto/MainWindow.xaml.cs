@@ -21,8 +21,26 @@ namespace _12B_keszletnyilvantarto {
     public partial class MainWindow : Window {
 
         MySqlConnection kapcs = new MySqlConnection("server = server.fh2.hu;database = v2labgwj_12b; uid = v2labgwj_12b; password = '4W56FNhfKJfeZVhGwasG';");
+        List<Termek> termekek = new List<Termek>();
+
         public MainWindow() {
             InitializeComponent();
+            try {
+                kapcs.Open();
+                MySqlCommand parancs = new MySqlCommand("SELECT * FROM gergelyv_termek", kapcs);
+                MySqlDataReader reader = parancs.ExecuteReader();
+                while (reader.Read()) {
+                    Termek ujTermek = new Termek(reader.GetInt32(0), reader.GetString(1), reader.GetString(2));
+                    termekek.Add(ujTermek);
+                }
+                dgTermekek.ItemsSource = termekek;
+            }
+            catch (Exception ex) {
+                MessageBox.Show(ex.Message);
+            }
+            finally {
+                kapcs.Close();
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) {
@@ -30,6 +48,10 @@ namespace _12B_keszletnyilvantarto {
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e) {
+
+        }
+
+        private void dgTermekek_SelectionChanged(object sender, SelectionChangedEventArgs e) {
 
         }
     }
