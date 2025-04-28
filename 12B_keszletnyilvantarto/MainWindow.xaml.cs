@@ -44,7 +44,22 @@ namespace _12B_keszletnyilvantarto {
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) {
+            try {
+                kapcs.Open();
+                new MySqlCommand($"insert into gergelyv_termek (cikkszam, megnevezes) values ('{txCikkszam.Text}','{txMegnevezes.Text}')", kapcs).ExecuteNonQuery();
 
+                Termek ujTermek = new Termek(termekek.Max(x => x.Id) + 1, txCikkszam.Text, txMegnevezes.Text);
+                termekek.Add(ujTermek);
+                dgTermekek.Items.Refresh();
+                txCikkszam.Clear();
+                txMegnevezes.Clear();
+            }
+            catch (Exception ex) {
+                MessageBox.Show(ex.Message);
+            }
+            finally {
+                kapcs.Close();
+            }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e) {
