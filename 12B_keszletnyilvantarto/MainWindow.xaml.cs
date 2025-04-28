@@ -81,11 +81,28 @@ namespace _12B_keszletnyilvantarto {
         }
 
         private void dgTermekek_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            //if (dgTermekek.SelectedItem is Termek) {
-            var termek = (Termek)dgTermekek.SelectedItem;
-            txCikkszam.Text = termek.Cikkszam;
-            txMegnevezes.Text = termek.Megnevezes;
-            //}
+            if (dgTermekek.SelectedItem is Termek) {
+                var termek = (Termek)dgTermekek.SelectedItem;
+                txCikkszam.Text = termek.Cikkszam;
+                txMegnevezes.Text = termek.Megnevezes;
+            }
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e) {
+            // törlés
+            try {
+                kapcs.Open();
+                var termek = (Termek)dgTermekek.SelectedItem;
+                new MySqlCommand($"delete from gergelyv_termek where id = {termek.Id}", kapcs).ExecuteNonQuery();
+                termekek.Remove(termek);
+                dgTermekek.Items.Refresh();
+            }
+            catch (Exception ex) {
+                MessageBox.Show(ex.Message);
+            }
+            finally {
+                kapcs.Close();
+            }
         }
     }
 }
