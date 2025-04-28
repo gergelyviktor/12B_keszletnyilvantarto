@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_12B_keszletnyilvantarto"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" KeyDown="Window_KeyDown">
     <Grid>
         <DataGrid x:Name="dgTermekek" Margin="0,0,507,0" SelectionChanged="dgTermekek_SelectionChanged"/>
         <Label Content="Cikkszám" HorizontalAlignment="Left" Margin="339,41,0,0" VerticalAlignment="Top"/>
@@ -15,6 +15,7 @@
         <Button Content="Felvisz" HorizontalAlignment="Left" Margin="589,45,0,0" VerticalAlignment="Top" Click="Button_Click"/>
         <Button Content="Módosít" HorizontalAlignment="Left" Margin="589,92,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
         <Button Content="Töröl" HorizontalAlignment="Left" Margin="589,131,0,0" VerticalAlignment="Top" Click="Button_Click_2"/>
+        <Label x:Name="lbDebug" Content="" HorizontalAlignment="Left" Margin="349,10,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

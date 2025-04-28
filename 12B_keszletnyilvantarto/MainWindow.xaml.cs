@@ -104,5 +104,17 @@ namespace _12B_keszletnyilvantarto {
                 kapcs.Close();
             }
         }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e) {
+            lbDebug.Content = e.Key.ToString();
+            foreach (var item in termekek) {
+                if (item.Cikkszam[0].ToString() == e.Key.ToString()) {
+                    txCikkszam.Text = item.Cikkszam;
+                    txMegnevezes.Text = item.Megnevezes;
+                    dgTermekek.SelectedItem = item;
+                    break;
+                }
+            }
+        }
     }
 }
