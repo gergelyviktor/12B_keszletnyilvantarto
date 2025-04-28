@@ -67,7 +67,12 @@ namespace _12B_keszletnyilvantarto {
         }
 
         private void dgTermekek_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            if (dgTermekek.SelectedItem is Termek) {
+                var termek = (Termek)dgTermekek.SelectedItem;
+                txCikkszam.Text = termek.Cikkszam;
+                txMegnevezes.Text = termek.Megnevezes;
 
+            }
         }
     }
 }
