@@ -20,17 +20,17 @@ namespace _12B_keszletnyilvantarto {
     /// </summary>
     public partial class MainWindow : Window {
 
-        MySqlConnection kapcs = new MySqlConnection("server = server.fh2.hu;database = v2labgwj_12b; uid = v2labgwj_12b; password = '4W56FNhfKJfeZVhGwasG';");
+        MySqlConnection kapcs = new MySqlConnection("server = srv1.tarhely.pro;database = v2labgwj_12b_gergelyv; uid = v2labgwj_12b_gergelyv; password = '';");
         List<Termek> termekek = new List<Termek>();
 
         public MainWindow() {
             InitializeComponent();
             try {
                 kapcs.Open();
-                MySqlCommand parancs = new MySqlCommand("SELECT * FROM gergelyv_termek", kapcs);
+                MySqlCommand parancs = new MySqlCommand("SELECT * FROM keszlet", kapcs);
                 MySqlDataReader reader = parancs.ExecuteReader();
                 while (reader.Read()) {
-                    Termek ujTermek = new Termek(reader.GetInt32(0), reader.GetString(1), reader.GetString(2));
+                    Termek ujTermek = new Termek(reader.GetString(0), reader.GetString(1), reader.GetInt32(2), reader.GetInt32(3));
                     termekek.Add(ujTermek);
                 }
                 dgTermekek.ItemsSource = termekek;
@@ -44,11 +44,12 @@ namespace _12B_keszletnyilvantarto {
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) {
+            // felvitel
             try {
                 kapcs.Open();
-                new MySqlCommand($"insert into gergelyv_termek (cikkszam, megnevezes) values ('{txCikkszam.Text}','{txMegnevezes.Text}')", kapcs).ExecuteNonQuery();
+                new MySqlCommand($"insert into keszlet (cikkszam, megnevezes) values ('{txCikkszam.Text}','{txMegnevezes.Text}')", kapcs).ExecuteNonQuery();
 
-                Termek ujTermek = new Termek(termekek.Max(x => x.Id) + 1, txCikkszam.Text, txMegnevezes.Text);
+                Termek ujTermek = new Termek(txCikkszam.Text, txMegnevezes.Text, 0,-1);
                 termekek.Add(ujTermek);
                 dgTermekek.Items.Refresh();
                 txCikkszam.Clear();
@@ -67,7 +68,7 @@ namespace _12B_keszletnyilvantarto {
             try {
                 kapcs.Open();
                 var termek = (Termek)dgTermekek.SelectedItem;
-                new MySqlCommand($"update gergelyv_termek set cikkszam = '{txCikkszam.Text}', megnevezes = '{txMegnevezes.Text}' where id = {termek.Id}", kapcs).ExecuteNonQuery();
+                new MySqlCommand($"update keszlet set megnevezes = '{txMegnevezes.Text}' where cikkszam = '{txCikkszam.Text}'", kapcs).ExecuteNonQuery();
                 termek.Cikkszam = txCikkszam.Text;
                 termek.Megnevezes = txMegnevezes.Text;
                 dgTermekek.Items.Refresh();
@@ -93,7 +94,7 @@ namespace _12B_keszletnyilvantarto {
             try {
                 kapcs.Open();
                 var termek = (Termek)dgTermekek.SelectedItem;
-                new MySqlCommand($"delete from gergelyv_termek where id = {termek.Id}", kapcs).ExecuteNonQuery();
+                new MySqlCommand($"delete from keszlet where cikkszam = '{termek.Cikkszam}'", kapcs).ExecuteNonQuery();
                 termekek.Remove(termek);
                 dgTermekek.Items.Refresh();
             }

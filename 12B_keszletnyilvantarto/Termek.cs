@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 
 namespace _12B_keszletnyilvantarto {
     internal class Termek {
-        public int Id { get; set; }
         public string Cikkszam { get; set; }
         public string Megnevezes { get; set; }
+        public int Ar { get; set; }
+        public int Mennyiseg { get; set; }
 
-        public Termek(int id, string cikkszam, string megnevezes) {
-            Id = id;
+        public Termek(string cikkszam, string megnevezes, int ar, int mennyiseg) {
             Cikkszam = cikkszam;
             Megnevezes = megnevezes;
+            Ar = ar;
+            Mennyiseg = mennyiseg;
         }
     }
 }
